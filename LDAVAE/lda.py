@@ -45,13 +45,15 @@ def lda_experiment(run_info, top_folder):
     tfidf_vectorizer = TfidfVectorizer(max_df=0.9, min_df=2, lowercase=False, max_features=n_features,
                                        stop_words={'english'}, analyzer='word')
     tfidf = tfidf_vectorizer.fit_transform(new_df)
+
+    tfidf_train = tfidf_vectorizer.transform(x_train)
     
     with open(main_folder + 'lda_vectorizer_tfidf.pkl', 'wb') as handle:
         pkl.dump(tfidf_vectorizer.vocabulary_, handle)
     
     lda_2 = LatentDirichletAllocation(n_components=n_topics, max_iter=n_iter, learning_method='batch',
                                       learning_offset=50., random_state=0, verbose=1)
-    lda_2.fit(tfidf)
+    lda_2.fit(tfidf_train)
     
     tf_feature_names = tfidf_vectorizer.get_feature_names()
     if n_topics <= 10:
