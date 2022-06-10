@@ -4,7 +4,6 @@ import numpy as np
 sys.path.append('../')
 import matplotlib
 matplotlib.use('Agg')
-from feature_selection import *
 import seaborn as sns
 import pickle as pkl
 import matplotlib.gridspec as gridspec
@@ -1461,7 +1460,7 @@ def plot_varphi():
 
 
 def plot_top_words(model, feature_names, n_top_words, title, top_folder, dataset_name, word2vec_dim, my_stopwords,
-                   index_2_word, my_stopwords):
+                   index_2_word):
     this_data_folder = os.path.join(top_folder, 'data', dataset_name)
 
     with open(this_data_folder + '/word_index_' + str(word2vec_dim) + '.pkl', 'rb') as handle:

@@ -3,8 +3,6 @@ from LDAVAE.lda import *
 from preprocessing import *
 from plots import *
 from classifiers import *
-from clustering import *
-
 sys.path.append('../')
 
 
@@ -269,7 +267,6 @@ def main(run_info):
 
     # classification and evaluation
     evaluation_expermient(run_info)
-    clustering_expermient(main_folder)
 
     # run this function only if results for runs are not already computed
     lvae_classifier(run_info)
@@ -287,7 +284,7 @@ if __name__ == '__main__':
     else:
         dataset_name = exit('Error: You need to specify the dataset name with -d command. \nDatasets choices could be '
                             'Twitter or ISOT or Covid.')
-        # dataset_name = 'Covid'
+        # dataset_name = 'ISOT'
 
     if '-a' in sys.argv:
         dataset_address = sys.argv[sys.argv.index('-a') + 1]

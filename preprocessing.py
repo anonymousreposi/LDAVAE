@@ -150,22 +150,6 @@ def preprocess_and_filter(df, dataset_name, col_label='text'):
                     filtered_idx.append(idx)
                 new_df.loc[idx, :] = tweet_text_list, label
 
-    elif dataset_name == 'CLOSE':
-        new_df = pd.DataFrame(data=0, columns=[col_label], index=range(len(df)))
-        filtered_idx = []
-        # for idx, tweet in enumerate(tweets):
-        for idx in range(len(df)):
-            raw_tweet = df.loc[idx, col_label]
-            tweet_text_list = process_text(raw_tweet)
-            # new_tweet_text_list = [w for w in tweet_text_list if w not in set(stopwords.words('english'))]
-            if len(tweet_text_list.split(' ')) == 0:
-                filtered_idx.append(idx)
-                new_df.loc[idx, col_label] = raw_tweet
-            else:
-                # tweet_text = ' '.join(new_tweet_text_list)
-                # if detect(tweet_text) != 'en':
-                #     filtered_idx.append(idx)
-                new_df.loc[idx, col_label] = tweet_text_list
     # apply filtering
     filtered_data_df = new_df.drop(filtered_idx).reset_index(drop=True)
     return filtered_data_df, filtered_idx
@@ -476,17 +460,17 @@ def prepare_data(run_info, top_folder, dataset_address):
         filtered_data_df_all = filtered_data_df_real.append(filtered_data_df_fake, ignore_index=True)
 
         x_train, x_test, y_train, y_test = pre_process_dataset(this_data_folder, filtered_data_df_all, dataset_name,
-                                                               target_column, word2vec_dim, sequence_len=500,
+                                                               target_column, word2vec_dim, sequence_len=sequence_length,
                                                                test_size=0.1)
     elif dataset_name == 'Covid':
         # this data is the original imbalance data
-        # address = dataset_address + dataset_name + '/COVID_Fake_News_Data.csv'
+        # address = dataset_address + dataset_name + '_imbalanced' + '/COVID_Fake_News_Data.csv'
         address = dataset_address + dataset_name + '/covidSelfDataset.csv'
         data_df = pd.read_csv(address)
         filtered_data_df, _ = preprocess_and_filter(data_df, dataset_name, col_label=target_column)
 
         x_train, x_test, y_train, y_test = pre_process_dataset(this_data_folder, filtered_data_df, dataset_name,
-                                                               target_column, word2vec_dim, sequence_len=115,
+                                                               target_column, word2vec_dim, sequence_len=sequence_length,
                                                                test_size=0.1)
 
     elif dataset_name == 'Twitter':
@@ -578,3 +562,5 @@ def make_run_info(top_folder, dataset_name, latent_dim, epoch_no, n_topics, n_it
     file1.close()
 
     return run_info
+
+
